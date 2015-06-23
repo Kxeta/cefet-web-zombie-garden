@@ -44,9 +44,21 @@ router.get('/new/', function(req, res) {
 
 
 /* POST registra uma nova pessoa */
-// IMPLEMENTAR AQUI
-
+router.post('/', function(req, res) {
+    var query = 'INSERT INTO person (name, alive) VALUES (' + db.escape(req.body.name) + ', 1);';
+    db.query(query, function(err, result) {
+        if (err)  { res.send(401, 'Erro ao adicionar: '+ err); }
+        else      { res.redirect('/people/'); }
+    });
+});
 /* DELETE uma pessoa */
-// IMPLEMENTAR AQUI
+router.delete('/:id/', function(req, res) {
+  var id = db.escape(req.params.id);
+  var query = 'DELETE FROM person WHERE id = ' + id;
+  db.query(query, function(err, result) {
+    if (err)  { res.send(401, 'Pessoa inexistente'); }
+    else      { res.redirect('/people/'); }
+  });
+});
 
 module.exports = router;
